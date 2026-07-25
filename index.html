@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Easy Differ</title>
+    <link rel="icon" href="favicon.png" type="image/png">
     <style>
         body,
         html {
@@ -81,11 +82,12 @@
 <body>
 
     <div class="header">
-        <h1>🔍 Easy Differ</h1>
+        <h1><img src="favicon.png" alt="favicon" style="width: 24px; vertical-align: middle;margin-right: 8px;">Easy
+            Differ</h1>
         <div class="controls">
             <span style="font-size: 14px;">语言:</span>
             <select id="language-select">
-                <option value="plaintext">纯文本 (Text)</option>
+                <option value="plaintext">纯文本</option>
                 <option value="javascript">JavaScript</option>
                 <option value="html">HTML</option>
                 <option value="css">CSS</option>
@@ -111,32 +113,47 @@
     <!-- 3. 使用加载器异步初始化编辑器 -->
     <script>
         require(['vs/editor/editor.main'], function () {
-            document.getElementById('loading').style.display = 'none'; // 隐藏加载提示
+            document.getElementById('loading').style.display = 'none';
 
             let diffEditor, originalModel, modifiedModel;
 
-            const defaultLeft = "在这里粘贴你的【基准】文章或代码（测试中文括号）\n\nfunction hello() {\n    console.log('Hello World');\n}";
-            const defaultRight = "在这里粘贴你的【对比】文章或代码（测试中文括号）\n\nfunction hello() {\n    console.log('Hello Diff');\n    // 新增了一行\n}";
+            const defaultLeft = "在这里粘贴你的【基准】文章或代码 \n\nfunction hello() {\n    console.log('Hello World');\n}";
+            const defaultRight = "在这里粘贴你的【对比】文章或代码 \n\nfunction hello() {\n    console.log('Hello Diff');\n    // 新增了一行\n}";
+
+
+            // ================= 【核心修改区：自定义主题】 =================
+            // 定义一个全新的主题，继承自带的暗黑主题，但覆盖高亮颜色
+            monaco.editor.defineTheme('my-diff-theme', {
+                base: 'vs-dark', // 基础主题
+                inherit: true,   // 继承基础主题的其他配置
+                rules: [],
+                colors: {
+                    // 1. 解决需求一：取消整行高亮 (把整行的背景色设置为透明色 #00000000 即可)
+                    'diffEditor.insertedLineBackground': '#00000000', // 右侧新增行的整行背景
+                    'diffEditor.removedLineBackground': '#00000000',  // 左侧删除行的整行背景
+
+                    // 2. 解决需求二：自定义具体变动字符的高亮颜色 (后面两位是透明度，防止颜色太深看不清字)
+                    'diffEditor.insertedTextBackground': '#00FF0060', // 新增字符高亮：亮绿色
+                    'diffEditor.removedTextBackground': '#FF555560',  // 删除字符高亮：淡红色
+                }
+            });
+
+            // 应用我们刚刚自定义的主题
+            monaco.editor.setTheme('my-diff-theme');
+            // ==========================================================
+
 
             // 初始化编辑器
-            monaco.editor.setTheme('vs-dark');
             diffEditor = monaco.editor.createDiffEditor(document.getElementById('diff-container'), {
                 enableSplitViewResizing: true,
                 renderSideBySide: true,
                 originalEditable: true,
                 automaticLayout: true,
                 ignoreTrimWhitespace: false,
-
-                // 【核心修改一】：关闭 Unicode 易混淆字符的黄色高亮（解决中文标点高亮问题）
-                unicodeHighlight: {
-                    ambiguousCharacters: false
-                },
-
-                // 【核心修改二】：关闭所有语言的语法校验装饰器（解决红色波浪线问题）
+                unicodeHighlight: { ambiguousCharacters: false },
                 renderValidationDecorations: 'off'
             });
 
-            // 创建左右两边的数据模型
             originalModel = monaco.editor.createModel(defaultLeft, "plaintext");
             modifiedModel = monaco.editor.createModel(defaultRight, "plaintext");
             diffEditor.setModel({ original: originalModel, modified: modifiedModel });
