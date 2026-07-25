@@ -88,11 +88,14 @@
             <span style="font-size: 14px;">语言:</span>
             <select id="language-select">
                 <option value="plaintext">纯文本</option>
-                <option value="javascript">JavaScript</option>
                 <option value="html">HTML</option>
                 <option value="css">CSS</option>
+                <option value="javascript">JavaScript</option>
+                <option value="typescript">TypeScript</option>
                 <option value="json">JSON</option>
+                <option value="python">Python</option>
                 <option value="java">Java</option>
+                <option value="markdown">Markdown</option>
             </select>
             <button class="btn-clear" id="btn-clear">清空内容</button>
         </div>
@@ -151,7 +154,9 @@
                 automaticLayout: true,
                 ignoreTrimWhitespace: false,
                 unicodeHighlight: { ambiguousCharacters: false },
-                renderValidationDecorations: 'off'
+                renderValidationDecorations: 'off',
+                lineHeight: 24,  // 设置行高（单位：像素）
+                fontSize: 14     // 设置字体大小（单位：像素），配合行高使用效果更好
             });
 
             originalModel = monaco.editor.createModel(defaultLeft, "plaintext");
