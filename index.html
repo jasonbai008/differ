@@ -191,14 +191,14 @@
 
             // 初始化编辑器
             diffEditor = monaco.editor.createDiffEditor(document.getElementById("diff-container"), {
-                enableSplitViewResizing: true,
-                renderSideBySide: true,
-                originalEditable: true,
-                automaticLayout: true,
+                enableSplitViewResizing: true, // 允许通过拖动分割线来调整左右视图的大小
+                renderSideBySide: true, // 并排显示差异视图，而不是内联显示
+                originalEditable: true, // 允许编辑左侧（原始）编辑器
+                automaticLayout: true, // 容器大小改变时自动调整编辑器布局
                 ignoreTrimWhitespace: false, // 保留首尾空白差异，确保删除的空格也能显示高亮
                 renderIndicators: false, // 不显示左侧的 + - 指示器，使界面更清爽
-                unicodeHighlight: { ambiguousCharacters: false },
-                renderValidationDecorations: "off",
+                unicodeHighlight: { ambiguousCharacters: false }, // 禁用歧义字符的高亮显示
+                renderValidationDecorations: "off", // 关闭验证装饰，使界面更清爽
                 lineHeight: 24, // 设置行高（单位：像素）
                 fontSize: 14, // 设置字体大小（单位：像素），配合行高使用效果更好
                 diffAlgorithm: "advanced", // 使用更先进的差异算法
