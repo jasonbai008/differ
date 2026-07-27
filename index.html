@@ -153,10 +153,10 @@
 
     <!-- 1. 配置 Monaco 的路径 (使用 jsdelivr) -->
     <script>
-        var require = { paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs" } };
+        var require = { paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs" } };
     </script>
     <!-- 2. 引入 Monaco 的加载器 -->
-    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/loader.js"></script>
 
     <!-- 3. 使用加载器异步初始化编辑器 -->
     <script>
@@ -195,11 +195,14 @@
                 renderSideBySide: true,
                 originalEditable: true,
                 automaticLayout: true,
-                ignoreTrimWhitespace: false,
+                ignoreTrimWhitespace: false, // 保留首尾空白差异，确保删除的空格也能显示高亮
+                renderIndicators: false, // 不显示左侧的 + - 指示器，使界面更清爽
                 unicodeHighlight: { ambiguousCharacters: false },
                 renderValidationDecorations: "off",
                 lineHeight: 24, // 设置行高（单位：像素）
                 fontSize: 14, // 设置字体大小（单位：像素），配合行高使用效果更好
+                diffAlgorithm: "advanced", // 使用更先进的差异算法
+                maxComputationTime: 0, // 解除差异计算时间限制，使差异对比更精确
             });
 
             originalModel = monaco.editor.createModel(defaultLeft, "plaintext");
