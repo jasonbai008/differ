@@ -203,6 +203,7 @@
                 fontSize: 14, // 设置字体大小（单位：像素），配合行高使用效果更好
                 diffAlgorithm: "advanced", // 使用更先进的差异算法
                 maxComputationTime: 0, // 解除差异计算时间限制，使差异对比更精确
+                scrollBeyondLastLine: false, // 取消最后一行底部的过多留白
             });
 
             originalModel = monaco.editor.createModel(defaultLeft, "plaintext");
