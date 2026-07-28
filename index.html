@@ -1,249 +1,252 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Easy Differ</title>
     <link rel="icon" href="favicon.png" type="image/png" />
     <style>
-      body,
-      html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #1e1e1e;
-      }
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e1e;
+        }
 
-      .header {
-        height: 60px;
-        background-color: #252526;
-        color: #cccccc;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 20px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-        z-index: 10;
-        position: relative;
-      }
-
-      .header h1 {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 500;
-        color: #ffffff;
-      }
-
-      .controls {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-      }
-
-      select {
-        background: #3c3c3c;
-        color: #fff;
-        border: 1px solid #555;
-        padding: 6px 12px;
-        border-radius: 4px;
-        outline: none;
-        font-size: 14px;
-      }
-
-      .btn-clear {
-        background: #007acc;
-        color: white;
-        border: none;
-        padding: 6px 15px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
-        transition: background 0.2s;
-      }
-
-      .btn-clear:hover {
-        background: #0098ff;
-      }
-
-      #diff-container {
-        width: 100%;
-        height: calc(100vh - 60px);
-      }
-
-      #loading {
-        color: white;
-        padding: 20px;
-        font-size: 16px;
-      }
-
-      /* 移动端优化 */
-      @media (max-width: 600px) {
         .header {
-          padding: 0 10px;
-          height: 50px;
+            height: 60px;
+            background-color: #252526;
+            color: #cccccc;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            position: relative;
         }
 
         .header h1 {
-          font-size: 16px;
-        }
-
-        .header h1 img {
-          width: 20px !important;
+            margin: 0;
+            font-size: 18px;
+            font-weight: 500;
+            color: #ffffff;
         }
 
         .controls {
-          gap: 5px;
-          flex-wrap: wrap;
-          justify-content: flex-end;
-        }
-
-        .controls span {
-          display: none;
-          /* 隐藏“语言:”文字 */
+            display: flex;
+            gap: 15px;
+            align-items: center;
         }
 
         select {
-          padding: 4px 6px;
-          font-size: 11px;
-          max-width: 70px;
+            background: #3c3c3c;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 6px 12px;
+            border-radius: 4px;
+            outline: none;
+            font-size: 14px;
         }
 
         .btn-clear {
-          padding: 4px 8px;
-          font-size: 11px;
-          white-space: nowrap;
+            background: #007acc;
+            color: white;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn-clear:hover {
+            background: #0098ff;
         }
 
         #diff-container {
-          height: calc(100vh - 50px);
+            width: 100%;
+            height: calc(100vh - 60px);
         }
-      }
-    </style>
-  </head>
 
-  <body>
+        #loading {
+            color: white;
+            padding: 20px;
+            font-size: 16px;
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 600px) {
+            .header {
+                padding: 0 10px;
+                height: 50px;
+            }
+
+            .header h1 {
+                font-size: 16px;
+            }
+
+            .header h1 img {
+                width: 20px !important;
+            }
+
+            .controls {
+                gap: 5px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+
+            .controls span {
+                display: none;
+                /* 隐藏“语言:”文字 */
+            }
+
+            select {
+                padding: 4px 6px;
+                font-size: 11px;
+                max-width: 70px;
+            }
+
+            .btn-clear {
+                padding: 4px 8px;
+                font-size: 11px;
+                white-space: nowrap;
+            }
+
+            #diff-container {
+                height: calc(100vh - 50px);
+            }
+        }
+    </style>
+</head>
+
+<body>
     <div class="header">
-      <h1><img src="favicon.png" alt="favicon" style="width: 24px; vertical-align: middle; margin-right: 8px" />Easy Differ</h1>
-      <div class="controls">
-        <span style="font-size: 14px">语言:</span>
-        <select id="language-select">
-          <option value="plaintext">纯文本</option>
-          <option value="html">HTML</option>
-          <option value="css">CSS</option>
-          <option value="json">JSON</option>
-          <option value="javascript">JavaScript</option>
-          <option value="typescript">TypeScript</option>
-          <option value="markdown">Markdown</option>
-          <option value="python">Python</option>
-          <option value="java">Java</option>
-        </select>
-        <button class="btn-clear" id="btn-clear-left">清除左侧空行</button>
-        <button class="btn-clear" id="btn-clear-right">清除右侧空行</button>
-        <button class="btn-clear" id="btn-clear">清空内容</button>
-      </div>
+        <h1><img src="favicon.png" alt="favicon" style="width: 24px; vertical-align: middle; margin-right: 8px" />Easy
+            Differ</h1>
+        <div class="controls">
+            <span style="font-size: 14px">语言:</span>
+            <select id="language-select">
+                <option value="plaintext">纯文本</option>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="json">JSON</option>
+                <option value="javascript">JavaScript</option>
+                <option value="typescript">TypeScript</option>
+                <option value="markdown">Markdown</option>
+                <option value="python">Python</option>
+                <option value="java">Java</option>
+            </select>
+            <button class="btn-clear" id="btn-clear-left">清除左侧空行</button>
+            <button class="btn-clear" id="btn-clear-right">清除右侧空行</button>
+            <button class="btn-clear" id="btn-clear">清空内容</button>
+        </div>
     </div>
 
     <!-- 编辑器容器 -->
     <div id="diff-container">
-      <div id="loading">正在加载编辑器...</div>
+        <div id="loading">正在加载编辑器...</div>
     </div>
 
     <!-- 1. 配置 Monaco 的路径 (使用 jsdelivr) -->
     <script>
-      var require = { paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs" } };
+        var require = { paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs" } };
     </script>
     <!-- 2. 引入 Monaco 的加载器 -->
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/loader.js"></script>
 
     <!-- 3. 使用加载器异步初始化编辑器 -->
     <script>
-      require(["vs/editor/editor.main"], function () {
-        document.getElementById("loading").style.display = "none";
+        require(["vs/editor/editor.main"], function () {
+            document.getElementById("loading").style.display = "none";
 
-        let diffEditor, originalModel, modifiedModel;
+            let diffEditor, originalModel, modifiedModel;
 
-        const defaultLeft = "欢迎使用 Easy Differ 文本对比工具\n\nEasy Differ 是一个高效的文本差异对比工具，帮助您快速比较两段文本的差异。\n\n项目亮点：\n- 基于强大的 Monaco Editor，提供专业级编辑体验\n- 实时高亮显示增删改内容，一目了然\n- 支持8种语言语法高亮\n- 响应式设计，完美支持移动端\n- 支持清除空行功能\n- 可左右拖动调整视图比例\n\n常用快捷键：\nCtrl+Z 撤销操作\nCtrl+F 查找内容\nCtrl+滚轮 放大/缩小字体";
-        const defaultRight = "欢迎使用 Easy Differ 文本对比工具\n\nEasy Differ 是一个简单高效的文本差异对比工具，帮助您快速比较两段文本的差异。\n\n项目亮点：\n- 基于 Monaco Editor 提供专业级编辑体验\n- 实时高亮显示增删改内容，清晰直观\n- 支持9种语言语法高亮\n- 响应式设计，完美支持移动端\n- 支持清除空行功能\n- 可拖动调整左右视图比例\n\n常用快捷键：\nCtrl+Z 撤销操作\nCtrl+F 查找内容\nCtrl+滚轮 缩放字体大小";
+            const defaultLeft = "欢迎使用 Easy Differ 文本对比工具\n\nEasy Differ 是一款文本差异对比工具，帮助您快速比较两段文本的差异。\n\n项目亮点：\n- 基于强大的 Monaco Editor，提供专业级编辑体验\n- 实时高亮显示增删改内容，一目了然\n- 支持8种语言语法高亮\n- 响应式设计，完美支持移动端\n- 支持清除空行功能\n- 可左右拖动调整视图比例\n\n常用快捷键：\nCtrl + F 查找内容\nCtrl + H 批量替换\nCtrl + Z 撤销操作\nCtrl + D 连续选择相同内容\nCtrl + 滚轮 放大/缩小字体\nAlt + Click 多光标同时编辑";
+            const defaultRight = "欢迎使用 Easy Differ 文本对比工具\n\nEasy Differ 是一款简单高效的文本差异对比工具，帮助您快速比较两段文本的差异。\n\n项目亮点：\n- 基于 Monaco Editor 提供专业级编辑体验\n- 实时高亮显示增删改内容，清晰直观\n- 支持9种语言语法高亮\n- 响应式设计，完美支持移动端\n- 支持清除空行功能\n- 可拖动调整左右视图比例\n\n常用快捷键：\nCtrl + F 查找内容\nCtrl + H 批量替换\nCtrl + Z 撤销操作\nCtrl + D 连续选择相同内容\nCtrl + 滚轮 缩放字体大小\nAlt + Click 多光标同时编辑";
 
-        // ================= 【核心修改区：自定义主题】 =================
-        // 定义一个全新的主题，继承自带的暗黑主题，但覆盖高亮颜色
-        monaco.editor.defineTheme("my-diff-theme", {
-          base: "vs-dark", // 基础主题
-          inherit: true, // 继承基础主题的其他配置
-          rules: [],
-          colors: {
-            // 1. 解决需求一：取消整行高亮 (把整行的背景色设置为透明色 #00000000 即可)
-            "diffEditor.insertedLineBackground": "#00000000", // 右侧新增行的整行背景
-            "diffEditor.removedLineBackground": "#00000000", // 左侧删除行的整行背景
+            // ================= 【核心修改区：自定义主题】 =================
+            // 定义一个全新的主题，继承自带的暗黑主题，但覆盖高亮颜色
+            monaco.editor.defineTheme("my-diff-theme", {
+                base: "vs-dark", // 基础主题
+                inherit: true, // 继承基础主题的其他配置
+                rules: [],
+                colors: {
+                    // 1. 解决需求一：取消整行高亮 (把整行的背景色设置为透明色 #00000000 即可)
+                    "diffEditor.insertedLineBackground": "#00000000", // 右侧新增行的整行背景
+                    "diffEditor.removedLineBackground": "#00000000", // 左侧删除行的整行背景
 
-            // 2. 解决需求二：自定义具体变动字符的高亮颜色 (后面两位是透明度，防止颜色太深看不清字)
-            "diffEditor.insertedTextBackground": "#00FF0060", // 新增字符高亮：亮绿色
-            "diffEditor.removedTextBackground": "#FF555560", // 删除字符高亮：淡红色
-          },
+                    // 2. 解决需求二：自定义具体变动字符的高亮颜色 (后面两位是透明度，防止颜色太深看不清字)
+                    "diffEditor.insertedTextBackground": "#00FF0060", // 新增字符高亮：亮绿色
+                    "diffEditor.removedTextBackground": "#FF555560", // 删除字符高亮：淡红色
+                },
+            });
+
+            // 应用我们刚刚自定义的主题
+            monaco.editor.setTheme("my-diff-theme");
+            // ==========================================================
+
+            // 初始化编辑器
+            diffEditor = monaco.editor.createDiffEditor(document.getElementById("diff-container"), {
+                enableSplitViewResizing: true, // 允许通过拖动分割线来调整左右视图的大小
+                renderSideBySide: true, // 并排显示差异视图，而不是内联显示
+                originalEditable: true, // 允许编辑左侧（原始）编辑器
+                automaticLayout: true, // 容器大小改变时自动调整编辑器布局
+                ignoreTrimWhitespace: false, // 保留首尾空白差异，确保删除的空格也能显示高亮
+                renderIndicators: false, // 不显示左侧的 + - 指示器，使界面更清爽
+                unicodeHighlight: { ambiguousCharacters: false }, // 禁用歧义字符的高亮显示
+                renderValidationDecorations: "off", // 关闭验证装饰，使界面更清爽
+                lineHeight: 24, // 设置行高（单位：像素）
+                fontSize: 14, // 设置字体大小（单位：像素），配合行高使用效果更好
+                diffAlgorithm: "advanced", // 使用更先进的差异算法
+                maxComputationTime: 0, // 解除差异计算时间限制，使差异对比更精确
+                scrollBeyondLastLine: false, // 取消最后一行底部的过多留白
+                mouseWheelZoom: true, // 允许通过鼠标滚轮缩放
+            });
+
+            originalModel = monaco.editor.createModel(defaultLeft, "plaintext");
+            modifiedModel = monaco.editor.createModel(defaultRight, "plaintext");
+            diffEditor.setModel({ original: originalModel, modified: modifiedModel });
+
+            // 切换语言事件
+            document.getElementById("language-select").addEventListener("change", function (e) {
+                const lang = e.target.value;
+                monaco.editor.setModelLanguage(originalModel, lang);
+                monaco.editor.setModelLanguage(modifiedModel, lang);
+            });
+
+            // 清空内容功能
+            document.getElementById("btn-clear").addEventListener("click", function () {
+                originalModel.setValue("");
+                modifiedModel.setValue("");
+            });
+
+            // 清除左侧空行功能
+            document.getElementById("btn-clear-left").addEventListener("click", function () {
+                const value = originalModel.getValue();
+                // 使用正则匹配并移除空行（包括仅含空白字符的行）
+                const newValue = value
+                    .split("\n")
+                    .filter((line) => line.trim() !== "")
+                    .join("\n");
+                originalModel.setValue(newValue);
+            });
+
+            // 清除右侧空行功能
+            document.getElementById("btn-clear-right").addEventListener("click", function () {
+                const value = modifiedModel.getValue();
+                // 使用正则匹配并移除空行（包括仅含空白字符的行）
+                const newValue = value
+                    .split("\n")
+                    .filter((line) => line.trim() !== "")
+                    .join("\n");
+                modifiedModel.setValue(newValue);
+            });
         });
-
-        // 应用我们刚刚自定义的主题
-        monaco.editor.setTheme("my-diff-theme");
-        // ==========================================================
-
-        // 初始化编辑器
-        diffEditor = monaco.editor.createDiffEditor(document.getElementById("diff-container"), {
-          enableSplitViewResizing: true, // 允许通过拖动分割线来调整左右视图的大小
-          renderSideBySide: true, // 并排显示差异视图，而不是内联显示
-          originalEditable: true, // 允许编辑左侧（原始）编辑器
-          automaticLayout: true, // 容器大小改变时自动调整编辑器布局
-          ignoreTrimWhitespace: false, // 保留首尾空白差异，确保删除的空格也能显示高亮
-          renderIndicators: false, // 不显示左侧的 + - 指示器，使界面更清爽
-          unicodeHighlight: { ambiguousCharacters: false }, // 禁用歧义字符的高亮显示
-          renderValidationDecorations: "off", // 关闭验证装饰，使界面更清爽
-          lineHeight: 24, // 设置行高（单位：像素）
-          fontSize: 14, // 设置字体大小（单位：像素），配合行高使用效果更好
-          diffAlgorithm: "advanced", // 使用更先进的差异算法
-          maxComputationTime: 0, // 解除差异计算时间限制，使差异对比更精确
-          scrollBeyondLastLine: false, // 取消最后一行底部的过多留白
-          mouseWheelZoom: true, // 允许通过鼠标滚轮缩放
-        });
-
-        originalModel = monaco.editor.createModel(defaultLeft, "plaintext");
-        modifiedModel = monaco.editor.createModel(defaultRight, "plaintext");
-        diffEditor.setModel({ original: originalModel, modified: modifiedModel });
-
-        // 切换语言事件
-        document.getElementById("language-select").addEventListener("change", function (e) {
-          const lang = e.target.value;
-          monaco.editor.setModelLanguage(originalModel, lang);
-          monaco.editor.setModelLanguage(modifiedModel, lang);
-        });
-
-        // 清空内容功能
-        document.getElementById("btn-clear").addEventListener("click", function () {
-          originalModel.setValue("");
-          modifiedModel.setValue("");
-        });
-
-        // 清除左侧空行功能
-        document.getElementById("btn-clear-left").addEventListener("click", function () {
-          const value = originalModel.getValue();
-          // 使用正则匹配并移除空行（包括仅含空白字符的行）
-          const newValue = value
-            .split("\n")
-            .filter((line) => line.trim() !== "")
-            .join("\n");
-          originalModel.setValue(newValue);
-        });
-
-        // 清除右侧空行功能
-        document.getElementById("btn-clear-right").addEventListener("click", function () {
-          const value = modifiedModel.getValue();
-          // 使用正则匹配并移除空行（包括仅含空白字符的行）
-          const newValue = value
-            .split("\n")
-            .filter((line) => line.trim() !== "")
-            .join("\n");
-          modifiedModel.setValue(newValue);
-        });
-      });
     </script>
-  </body>
+</body>
+
 </html>
