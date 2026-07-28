@@ -163,8 +163,8 @@
 
         let diffEditor, originalModel, modifiedModel;
 
-        const defaultLeft = "在这里粘贴你的【基准】文章或代码 \n\nfunction hello() {\n    console.log('Hello World');\n}";
-        const defaultRight = "在这里粘贴你的【对比】文章或代码 \n\nfunction hello() {\n    console.log('Hello Diff');\n    // 新增了一行\n}";
+        const defaultLeft = "欢迎使用 Easy Differ 文本对比工具\n\nEasy Differ 是一个高效的文本差异对比工具，帮助您快速比较两段文本的差异。\n\n项目亮点：\n- 基于强大的 Monaco Editor，提供专业级编辑体验\n- 实时高亮显示增删改内容，一目了然\n- 支持8种语言语法高亮\n- 响应式设计，完美支持移动端\n- 支持清除空行功能\n- 可左右拖动调整视图比例\n\n常用快捷键：\nCtrl+Z 撤销操作\nCtrl+F 查找内容\nCtrl+滚轮 放大/缩小字体";
+        const defaultRight = "欢迎使用 Easy Differ 文本对比工具\n\nEasy Differ 是一个简单高效的文本差异对比工具，帮助您快速比较两段文本的差异。\n\n项目亮点：\n- 基于 Monaco Editor 提供专业级编辑体验\n- 实时高亮显示增删改内容，清晰直观\n- 支持9种语言语法高亮\n- 响应式设计，完美支持移动端\n- 支持清除空行功能\n- 可拖动调整左右视图比例\n\n常用快捷键：\nCtrl+Z 撤销操作\nCtrl+F 查找内容\nCtrl+滚轮 缩放字体大小";
 
         // ================= 【核心修改区：自定义主题】 =================
         // 定义一个全新的主题，继承自带的暗黑主题，但覆盖高亮颜色
