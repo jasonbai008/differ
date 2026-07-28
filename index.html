@@ -165,8 +165,44 @@
 
             let diffEditor, originalModel, modifiedModel;
 
-            const defaultLeft = "欢迎使用 Easy Differ 文本对比工具\n\nEasy Differ 是一款文本差异对比工具，帮助您快速比较两段文本的差异。\n\n项目亮点：\n- 基于强大的 Monaco Editor，提供专业级编辑体验\n- 实时高亮显示增删改内容，一目了然\n- 支持8种语言语法高亮\n- 响应式设计，完美支持移动端\n- 支持清除空行功能\n- 可左右拖动调整视图比例\n\n常用快捷键：\nCtrl + F 查找内容\nCtrl + H 批量替换\nCtrl + Z 撤销操作\nCtrl + D 连续选择相同内容\nCtrl + 滚轮 放大/缩小字体\nAlt + Click 多光标同时编辑";
-            const defaultRight = "欢迎使用 Easy Differ 文本对比工具\n\nEasy Differ 是一款简单高效的文本差异对比工具，帮助您快速比较两段文本的差异。\n\n项目亮点：\n- 基于 Monaco Editor 提供专业级编辑体验\n- 实时高亮显示增删改内容，清晰直观\n- 支持9种语言语法高亮\n- 响应式设计，完美支持移动端\n- 支持清除空行功能\n- 可拖动调整左右视图比例\n\n常用快捷键：\nCtrl + F 查找内容\nCtrl + H 批量替换\nCtrl + Z 撤销操作\nCtrl + D 连续选择相同内容\nCtrl + 滚轮 缩放字体大小\nAlt + Click 多光标同时编辑";
+            const defaultLeft = `欢迎使用 Easy Differ 文本对比工具
+
+Easy Differ 是一款文本差异对比工具，帮助您快速比较两段文本的差异。
+
+项目亮点：
+- 基于强大的 Monaco Editor，提供专业级编辑体验
+- 实时高亮显示增删改内容，一目了然
+- 支持8种语言语法高亮
+- 响应式设计，完美支持移动端
+- 支持清除空行功能
+- 可左右拖动调整视图比例
+
+常用快捷键：
+Ctrl + F 查找内容
+Ctrl + H 批量替换
+Ctrl + Z 撤销操作
+Ctrl + D 连续选择相同内容
+Ctrl + 滚轮 放大/缩小字体
+Alt + Click 多光标同时编辑`;
+            const defaultRight = `欢迎使用 Easy Differ 文本对比工具
+
+Easy Differ 是一款简单高效的文本差异对比工具，帮助您快速比较两段文本的差异。
+
+项目亮点：
+- 基于 Monaco Editor 提供专业级编辑体验
+- 实时高亮显示增删改内容，清晰直观
+- 支持9种语言语法高亮
+- 响应式设计，完美支持移动端
+- 支持清除空行功能
+- 可拖动调整左右视图比例
+
+常用快捷键：
+Ctrl + F 查找内容
+Ctrl + H 批量替换
+Ctrl + Z 撤销操作
+Ctrl + D 连续选择相同内容
+Ctrl + 滚轮 缩放字体大小
+Alt + Click 多光标同时编辑`;
 
             // ================= 【核心修改区：自定义主题】 =================
             // 定义一个全新的主题，继承自带的暗黑主题，但覆盖高亮颜色
