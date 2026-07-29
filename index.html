@@ -119,6 +119,9 @@
             #diff-container {
                 height: calc(100vh - 50px);
             }
+        }
+
+        @media (max-width: 800px) {
 
             #btn-clear-left,
             #btn-clear-right {
@@ -233,7 +236,7 @@ Alt + Click 多光标同时编辑`;
             // 初始化编辑器
             diffEditor = monaco.editor.createDiffEditor(document.getElementById("diff-container"), {
                 enableSplitViewResizing: true, // 允许通过拖动分割线来调整左右视图的大小
-                renderSideBySide: true, // 并排显示差异视图，而不是内联显示
+                renderSideBySide: window.innerWidth > 800, // 根据初始窗口宽度决定布局方式 (移动端单列显示)
                 originalEditable: true, // 允许编辑左侧（原始）编辑器
                 automaticLayout: true, // 容器大小改变时自动调整编辑器布局
                 ignoreTrimWhitespace: false, // 保留首尾空白差异，确保删除的空格也能显示高亮
@@ -246,6 +249,14 @@ Alt + Click 多光标同时编辑`;
                 maxComputationTime: 0, // 解除差异计算时间限制，使差异对比更精确
                 scrollBeyondLastLine: false, // 取消最后一行底部的过多留白
                 mouseWheelZoom: true, // 允许通过鼠标滚轮缩放
+            });
+
+            // 监听窗口大小变化，动态切换布局
+            window.addEventListener("resize", function () {
+                const isMobile = window.innerWidth <= 800;
+                diffEditor.updateOptions({
+                    renderSideBySide: !isMobile
+                });
             });
 
             originalModel = monaco.editor.createModel(defaultLeft, "plaintext");
